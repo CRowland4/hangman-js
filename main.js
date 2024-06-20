@@ -11,7 +11,7 @@ function playGame() {
   console.log("H A N G M A N")
 
   let gameWord = getRandomElement(wordChoices);
-  let guess = input("Guess the word: ")
+  let guess = input(`Guess the word ${gameWord.slice(0, 3)}${"-".repeat(gameWord.length - 3)}: `)
 
   if (guess === gameWord) {
     console.log("You survived!");
