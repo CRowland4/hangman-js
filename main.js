@@ -2,22 +2,53 @@ const input = require('sync-input');
 
 const wordChoices = ["python", "java", "swift", "javascript"];
 
+
+function main() {
+  console.log("H A N G M A N\n")
+  let gameWord = getRandomElement(wordChoices);
+  gameLoop(gameWord);
+  console.log("Thanks for playing!");
+}
+
+
 function getRandomElement(elements) {
-  index = Math.floor(Math.random() * elements.length);
+  let index = Math.floor(Math.random() * elements.length);
   return elements[index];
 }
 
-function playGame() {
-  console.log("H A N G M A N")
 
-  let gameWord = getRandomElement(wordChoices);
-  let guess = input(`Guess the word ${gameWord.slice(0, 3)}${"-".repeat(gameWord.length - 3)}: `)
+function gameLoop(gameWord) {
+  let remainingGuesses = 8;
+  let wordProgress = "-".repeat(gameWord.length);
 
-  if (guess === gameWord) {
-    console.log("You survived!");
-  } else {
-    console.log("You lost!");
+  while (remainingGuesses !== 0) {
+    console.log(wordProgress);
+    let guess = input("Input a letter: ");
+
+    if (gameWord.includes(guess)) {
+      wordProgress = updateWordProgress(gameWord, wordProgress, guess);
+    } else {
+      console.log("That letter doesn't appear in the word.");
+    }
+
+    remainingGuesses--;
+    console.log();
   }
 }
 
-playGame()
+
+function updateWordProgress(gameWord, wordProgress, guess) {
+  let newProgress = "";
+
+  for (let i = 0; i < gameWord.length; i++) {
+    if (gameWord[i] === guess) {
+      newProgress += guess;
+    } else {
+      newProgress += wordProgress[i];
+    }
+  }
+
+  return newProgress;
+}
+
+main();
