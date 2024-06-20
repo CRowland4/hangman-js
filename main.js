@@ -23,17 +23,24 @@ function gameLoop(gameWord) {
 
   while (remainingGuesses !== 0) {
     console.log(wordProgress);
-    let guess = input("Input a letter: ");
-
-    if (gameWord.includes(guess)) {
-      wordProgress = updateWordProgress(gameWord, wordProgress, guess);
-    } else {
-      console.log("That letter doesn't appear in the word.");
+    if (!wordProgress.includes("-")) {
+      console.log("You guessed the word!");
+      console.log("You survived!");
+      return
     }
 
-    remainingGuesses--;
-    console.log();
+    let guess = input("Input a letter: ");
+    if (!gameWord.includes(guess)) {
+      console.log("That letter doesn't appear in the word.");
+      remainingGuesses--;
+    } else if (wordProgress.includes(guess)) {
+      console.log("No improvements.");
+      remainingGuesses--;
+    } else if (gameWord.includes(guess)) {
+      wordProgress = updateWordProgress(gameWord, wordProgress, guess);
+    }
   }
+  console.log("You lost!");
 }
 
 
