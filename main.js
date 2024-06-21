@@ -20,23 +20,29 @@ function getRandomElement(elements) {
 function gameLoop(gameWord) {
   let remainingGuesses = 8;
   let wordProgress = "-".repeat(gameWord.length);
+  let previousGuesses = [];
 
   while (remainingGuesses !== 0) {
     console.log(wordProgress);
     if (!wordProgress.includes("-")) {
-      console.log("You guessed the word!");
+      console.log(`You guessed the word ${wordProgress}!`);
       console.log("You survived!");
       return
     }
 
     let guess = input("Input a letter: ");
-    if (!gameWord.includes(guess)) {
+    if (guess.length !== 1) {
+      console.log("Please, input a single letter.");
+    } else if (!/[a-z]/.test(guess)) {
+      console.log("Please, enter a lowercase letter from the English alphabet.");
+    } else if (previousGuesses.includes(guess)) {
+      console.log("You've already guessed this letter.");
+    } else if (!gameWord.includes(guess)) {
       console.log("That letter doesn't appear in the word.");
-      remainingGuesses--;
-    } else if (wordProgress.includes(guess)) {
-      console.log("No improvements.");
+      previousGuesses.push(guess);
       remainingGuesses--;
     } else if (gameWord.includes(guess)) {
+      previousGuesses.push(guess);
       wordProgress = updateWordProgress(gameWord, wordProgress, guess);
     }
   }
